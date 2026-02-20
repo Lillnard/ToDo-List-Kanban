@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kanban To-Do</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<button id="add-task-btn">Nova tarefa</button>
+
+<div class="board">
+  <div class="column" id="todo-column" data-status="todo">
+    <div class="col-title">A Fazer</div>
+  </div>
+
+  <div class="column" id="doing-column" data-status="doing">
+    <div class="col-title">Fazendo</div>
+  </div>
+
+  <div class="column" id="done-column" data-status="done">
+    <div class="col-title">Concluídas</div>
+  </div>
+</div>
+
+<div class="modal" id="task-modal">
+  <div class="modal-content">
+    <h3 id="modal-title" style="text-align:center; margin-bottom:5px;">Criar Tarefa</h3>
+
+    <input type="text" id="task-name" placeholder="Nome da tarefa" />
+    <input type="text" id="task-owner" placeholder="Responsável" />
+
+    <label>Prazo</label>
+    <input type="datetime-local" id="task-deadline" />
+
+    <button id="save-task-btn">Salvar</button>
+    <button id="cancel-task-btn">Cancelar</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
