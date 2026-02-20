@@ -6,14 +6,45 @@ body {
     display: flex;
     height: 100vh;
     overflow: hidden;
+    transition: background 0.3s, color 0.3s;
   }
   
-  /* Board com espaço entre colunas */
+  /* Dark mode */
+  body.dark {
+    background: #1e1e1e;
+    color: white;
+  }
+  
+  #theme-toggle {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    background: #333;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  #add-task-btn {
+    margin: 10px;
+    padding: 10px;
+    background: #ffd43b;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  /* Board */
   .board {
     display: flex;
     flex: 1;
     gap: 15px;
     padding: 10px;
+    height: calc(100vh - 90px);
   }
   
   .column {
@@ -21,6 +52,11 @@ body {
     padding: 10px;
     overflow-y: auto;
     border-radius: 8px;
+    transition: transform 0.2s;
+  }
+  
+  .column:active {
+    transform: scale(0.98);
   }
   
   .col-title {
@@ -31,11 +67,9 @@ body {
   #todo-column {
     background: #fff9d6;
   }
-  
   #doing-column {
     background: #d9ecff;
   }
-  
   #done-column {
     background: #d8ffd9;
   }
@@ -47,6 +81,11 @@ body {
     border-radius: 6px;
     cursor: grab;
     user-select: none;
+    transition: transform 0.2s ease, background 0.3s;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
   }
   
   .todo-card { background: #ffef9a; }
@@ -56,16 +95,37 @@ body {
   .warning { background: #ffc48a !important; }
   .danger { background: #ff8a8a !important; }
   
-  /* Botão Nova Tarefa */
-  #add-task-btn {
-    margin: 10px;
-    padding: 10px;
-    background: #ffd43b;
+  /* Barra de progresso */
+  .progress-bar {
+    height: 6px;
+    background: rgba(0,0,0,0.20);
+    border-radius: 4px;
+    margin-top: 5px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    transition: width 0.5s;
+  }
+  
+  /* Botões internos */
+  .card button {
+    margin-top: 5px;
+    width: 100%;
+    padding: 6px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    color: white;
   }
+  
+  .edit-btn { background: #2196f3; }
+  .delete-btn { background: #e53935; }
+  .start-btn { background: #ff9800; }
+  .finish-btn { background: #43a047; }
   
   /* Modal */
   .modal {
@@ -82,19 +142,23 @@ body {
   
   .modal-content {
     background: #ffffff;
+    color: black;
     padding: 25px;
     width: 320px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
   
+  body.dark .modal-content {
+    background: #333;
+    color: white;
+  }
+  
   .modal input, .modal button, .modal label {
     width: 100%;
     font-size: 15px;
-    box-sizing: border-box;
   }
   
   .modal input {
@@ -103,25 +167,29 @@ body {
     border: 1px solid #ccc;
   }
   
-  .modal input:focus {
-    border-color: #6aa9ff;
-    outline: none;
-  }
-  
   .modal button {
     padding: 10px;
-    cursor: pointer;
     border: none;
     border-radius: 6px;
-    font-weight: bold;
   }
   
   #save-task-btn {
     background: #4caf50;
     color: white;
   }
-  
   #cancel-task-btn {
-    background: #d9534f;
+    background: #e53935;
     color: white;
+  }
+  
+  /* MOBILE */
+  @media (max-width: 800px) {
+    .board {
+      flex-direction: column;
+      height: auto;
+      overflow-y: auto;
+    }
+    .column {
+      height: auto;
+    }
   }
