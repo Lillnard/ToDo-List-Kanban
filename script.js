@@ -2,7 +2,7 @@ let tasks = JSON.parse(localStorage.getItem("kanbanTasks") || "[]");
 let dragged = null;
 let editingId = null;
 
-/* Salvar */
+/* STORAGE */
 function saveToStorage() {
   localStorage.setItem("kanbanTasks", JSON.stringify(tasks));
 }
@@ -15,30 +15,69 @@ function openModal(edit = false, task = {}) {
   document.getElementById("task-name").value = task.name || "";
   document.getElementById("task-owner").value = task.owner || "";
   document.getElementById("task-deadline").value = task.deadline || "";
+
+  setMinDate();
 }
+
+/* Permitir hoje, mas não datas anteriores */
+function setMinDate() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const localISO = today.toISOString().slice(0, 10);
+  document.getElementById("task-deadline").min = localISO + "T00:00";
+}
+
+/* Validação correta */
+function validateDeadline(deadline) {
+  const selected = new Date(deadline);
+  const now = new Date();
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const selectedDay = new Date(selected);
+  selectedDay.setHours(0, 0, 0, 0);
+
+  // Bloqueia datas anteriores a hoje
+  if (selectedDay < today) {
+    alert("A data não pode ser anterior a hoje.");
+    return false;
+  }
+
+  // Se for hoje, o horário deve ser futuro
+  if (selectedDay.getTime() === today.getTime() && selected <= now) {
+    alert("Selecione um horário futuro.");
+    return false;
+  }
+
+  return true;
+}
+
 function closeModal() {
   document.getElementById("task-modal").style.display = "none";
   editingId = null;
 }
 
-/* Criar card */
+/* Create Card */
 function createCard(task) {
   const card = document.createElement("div");
   card.classList.add("card", `${task.status}-card`);
   card.draggable = true;
   card.dataset.id = task.id;
 
+  const showProgress = task.status !== "done";
+
   card.innerHTML = `
     <div class="card-header">
       <strong>${task.name}</strong><br>
       Resp: ${task.owner}<br>
       Prazo: ${new Date(task.deadline).toLocaleString()}
+      ${showProgress ? `
       <div class="progress-bar">
-        <div class="progress-fill"></div>
-      </div>
+        <div class="progress-fill" data-bar></div>
+      </div>` : ""}
     </div>
-
-    <i class="fa fa-chevron-down expand-toggle"></i>
 
     <div class="extra">
       <button class="edit-btn"><i class="fa fa-pen"></i> Editar</button>
@@ -60,23 +99,16 @@ function createCard(task) {
   card.querySelector(".edit-btn").onclick = () => editTask(task.id);
   card.querySelector(".delete-btn").onclick = () => deleteTask(task.id);
 
-  if (card.querySelector(".start-btn")) {
+  if (card.querySelector(".start-btn"))
     card.querySelector(".start-btn").onclick = () => moveTask(task.id, "doing");
-  }
-  if (card.querySelector(".finish-btn")) {
-    card.querySelector(".finish-btn").onclick = () => moveTask(task.id, "done");
-  }
 
-  /* Expandir */
-  const toggle = card.querySelector(".expand-toggle");
-  toggle.onclick = () => {
-    card.classList.toggle("expanded");
-  };
+  if (card.querySelector(".finish-btn"))
+    card.querySelector(".finish-btn").onclick = () => moveTask(task.id, "done");
 
   return card;
 }
 
-/* Renderizar */
+/* Render */
 function loadBoard() {
   document.querySelectorAll(".column").forEach(c => {
     c.querySelectorAll(".card").forEach(card => card.remove());
@@ -88,13 +120,15 @@ function loadBoard() {
   });
 }
 
-/* Criar */
+/* Create */
 function addTask() {
   const name = document.getElementById("task-name").value;
   const owner = document.getElementById("task-owner").value;
   const deadline = document.getElementById("task-deadline").value;
 
-  tasks.push({ 
+  if (!validateDeadline(deadline)) return;
+
+  tasks.push({
     id: Date.now(),
     name,
     owner,
@@ -107,41 +141,48 @@ function addTask() {
   closeModal();
 }
 
-/* Editar */
+/* Edit */
 function editTask(id) {
   const t = tasks.find(x => x.id === id);
   editingId = id;
   openModal(true, t);
 }
+
 function updateTask() {
   const t = tasks.find(x => x.id === editingId);
+  const newDeadline = document.getElementById("task-deadline").value;
+
+  if (!validateDeadline(newDeadline)) return;
+
   t.name = document.getElementById("task-name").value;
   t.owner = document.getElementById("task-owner").value;
-  t.deadline = document.getElementById("task-deadline").value;
+  t.deadline = newDeadline;
 
   saveToStorage();
   loadBoard();
   closeModal();
 }
 
-/* Excluir */
+/* Delete */
 function deleteTask(id) {
   tasks = tasks.filter(x => x.id !== id);
   saveToStorage();
   loadBoard();
 }
 
-/* Mover */
+/* Move */
 function moveTask(id, newStatus) {
   const t = tasks.find(x => x.id === id);
   t.status = newStatus;
+
   saveToStorage();
   loadBoard();
 }
 
-/* Drag & Drop */
+/* Drag */
 document.querySelectorAll(".column").forEach(col => {
   col.addEventListener("dragover", e => e.preventDefault());
+
   col.addEventListener("drop", () => {
     if (!dragged) return;
 
@@ -149,19 +190,21 @@ document.querySelectorAll(".column").forEach(col => {
     const t = tasks.find(x => x.id === id);
 
     t.status = col.dataset.status;
-
     saveToStorage();
     loadBoard();
   });
 });
 
-/* Barra de progresso + alerta */
+/* Progress */
 function updateProgress() {
   const now = Date.now();
 
   tasks.forEach(task => {
+    if (task.status === "done") return;
+
     const start = task.id;
     const deadline = new Date(task.deadline).getTime();
+
     const total = deadline - start;
     const spent = now - start;
 
@@ -170,56 +213,40 @@ function updateProgress() {
     const card = document.querySelector(`[data-id="${task.id}"]`);
     if (!card) return;
 
-    const bar = card.querySelector(".progress-fill");
-    bar.style.width = (ratio * 100) + "%";
+    const bar = card.querySelector("[data-bar]");
+    if (bar) bar.style.width = (ratio * 100) + "%";
 
     card.classList.remove("warning", "danger");
 
     if (ratio >= 1) {
       card.classList.add("danger");
-      notify("Prazo encerrado!", `${task.name} expirou.`);
     } else if (ratio >= 0.8) {
       card.classList.add("warning");
-      notify("Tarefa quase no fim!", `${task.name} está prestes a vencer.`);
     }
   });
 }
+
 setInterval(updateProgress, 1500);
 
-/* Notificações */
-function notify(title, text) {
-  if (!("Notification" in window)) return;
-
-  if (Notification.permission === "granted") {
-    new Notification(title, { body: text });
-  }
-}
-Notification.requestPermission();
-
-/* Botões */
+/* UI Buttons */
 document.getElementById("add-task-btn").onclick = () => openModal();
 document.getElementById("cancel-task-btn").onclick = () => closeModal();
 document.getElementById("save-task-btn").onclick = () =>
   editingId ? updateTask() : addTask();
 
-/* Tema */
+/* THEME */
 const themeBtn = document.getElementById("theme-toggle");
-
 themeBtn.onclick = () => {
   const isDark = document.body.classList.toggle("dark");
-
-  const icon = themeBtn.querySelector("i");
-  icon.className = isDark ? "fa fa-sun" : "fa fa-moon";
-
+  themeBtn.querySelector("i").className = isDark ? "fa fa-sun" : "fa fa-moon";
   localStorage.setItem("kanbanTheme", isDark);
 };
 
 if (localStorage.getItem("kanbanTheme") === "true") {
   document.body.classList.add("dark");
-  const icon = themeBtn.querySelector("i");
-  icon.className = "fa fa-sun";
+  themeBtn.querySelector("i").className = "fa fa-sun";
 }
 
-/* Inicializar */
+/* Init */
 loadBoard();
 updateProgress();

@@ -1,23 +1,50 @@
+/* ==========================
+   BASE
+========================== */
+
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background: #f2f2f2;
     display: flex;
+    flex-direction: column;
     height: 100vh;
     overflow: hidden;
     transition: background 0.3s, color 0.3s;
 }
-  
+
+/* DARK MODE */
 body.dark {
     background: #1e1e1e;
     color: white;
 }
-  
+
+/* ==========================
+   HEADER
+========================== */
+
+header {
+    width: 100%;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+body.dark header {
+    background: #111;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
 #theme-toggle {
-    position: absolute;
-    right: 15px;
-    top: 15px;
     padding: 10px;
     border: none;
     border-radius: 50%;
@@ -26,26 +53,36 @@ body.dark {
     cursor: pointer;
     font-size: 18px;
 }
-  
+
+body.dark #theme-toggle {
+    background: #fff;
+    color: #000;
+}
+
+/* Botão nova tarefa */
 #add-task-btn {
-    margin: 10px;
-    padding: 10px;
+    margin-left: 12px;
+    padding: 10px 16px;
     background: #ffd43b;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
 }
-  
-/* Board */
+
+/* ==========================
+   BOARD
+========================== */
+
 .board {
     display: flex;
     flex: 1;
     gap: 15px;
     padding: 10px;
-    height: calc(100vh - 90px);
+    height: calc(100vh - 70px);
+    box-sizing: border-box;
 }
-  
+
 .column {
     flex: 1;
     padding: 10px;
@@ -53,21 +90,42 @@ body.dark {
     border-radius: 8px;
     transition: transform 0.2s;
 }
-  
+
 .column:active {
     transform: scale(0.98);
 }
-  
+
 .col-title {
     font-weight: bold;
     margin-bottom: 10px;
 }
-  
+
+/* Column colors */
 #todo-column { background: #fff9d6; }
 #doing-column { background: #d9ecff; }
 #done-column { background: #d8ffd9; }
 
-/* CARDS */
+/* Dark mode colors - ORIGINAL */
+body.dark .column { background: #111 !important; color: #eee; }
+
+body.dark #todo-column { border: 2px solid #c9b200; }
+body.dark #doing-column { border: 2px solid #0d6abf; }
+body.dark #done-column { border: 2px solid #0f8a17; }
+
+body.dark #todo-column .col-title { color: #c9b200; }
+body.dark #doing-column .col-title { color: #0d6abf; }
+body.dark #done-column .col-title { color: #0f8a17; }
+
+body.dark .todo-card { background: #947f16 !important; color: #fff; }
+body.dark .doing-card { background: #11539e !important; color: #fff; }
+body.dark .done-card { background: #137a1a !important; color: #fff; }
+body.dark .warning { background: #c2722d !important; }
+body.dark .danger { background: #bb1515 !important; }
+
+/* ==========================
+   CARDS
+========================== */
+
 .card {
     padding: 10px;
     margin-bottom: 10px;
@@ -76,13 +134,13 @@ body.dark {
     user-select: none;
     transition: transform 0.2s ease, background 0.3s, max-height 0.3s ease;
     position: relative;
-    overflow: hidden;
 }
 
 .card:hover {
     transform: scale(1.02);
 }
 
+/* Card colors */
 .todo-card { background: #ffef9a; }
 .doing-card { background: #a8d2ff; }
 .done-card { background: #92f59a; }
@@ -90,7 +148,7 @@ body.dark {
 .warning { background: #ffc48a !important; }
 .danger { background: #ff8a8a !important; }
 
-/* Barra de progresso */
+/* Progress bar */
 .progress-bar {
     height: 6px;
     background: rgba(0,0,0,0.20);
@@ -105,18 +163,15 @@ body.dark {
     transition: width 0.5s;
 }
 
-/* BOTÕES OCULTOS */
+/* Card Buttons */
 .extra {
-    display: none;
+    display: flex;
+    flex-direction: column;
     margin-top: 10px;
-}
-
-.card.expanded .extra {
-    display: block;
+    gap: 6px;
 }
 
 .card button {
-    margin-top: 5px;
     width: 100%;
     padding: 6px;
     border: none;
@@ -131,22 +186,10 @@ body.dark {
 .start-btn { background: #ff9800; }
 .finish-btn { background: #43a047; }
 
-/* ÍCONE DE EXPANDIR */
-.expand-toggle {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: transform 0.3s ease;
-    font-size: 18px;
-}
+/* ==========================
+   MODAL
+========================== */
 
-.card.expanded .expand-toggle {
-    transform: rotate(180deg);
-}
-
-/* MODAL */
 .modal {
     position: fixed;
     top: 0;
@@ -158,7 +201,7 @@ body.dark {
     align-items: center;
     justify-content: center;
 }
-  
+
 .modal-content {
     background: #ffffff;
     color: black;
@@ -169,57 +212,64 @@ body.dark {
     flex-direction: column;
     gap: 12px;
 }
-  
+
 body.dark .modal-content {
     background: #333;
     color: white;
 }
-  
+
 .modal input, .modal button, .modal label {
     width: 100%;
     font-size: 15px;
 }
-  
+
 .modal input {
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
 }
-  
+
 .modal button {
     padding: 10px;
     border: none;
     border-radius: 6px;
 }
-  
+
 #save-task-btn { background: #4caf50; color: white; }
 #cancel-task-btn { background: #e53935; color: white; }
-  
-/* MOBILE */
-@media (max-width: 800px) {
-    .board { flex-direction: column; height: auto; }
-    .column { height: auto; }
+
+/* ==========================
+   MOBILE RESPONSIVE
+========================== */
+
+@media (max-width: 768px) {
+
+    body {
+        overflow: auto;
+    }
+
+    header {
+        flex-wrap: wrap;
+        padding: 12px;
+        justify-content: space-between;
+    }
+
+    #theme-toggle {
+        margin-left: 0;
+    }
+
+    .board {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+    }
+
+    .column {
+        width: 100%;
+        height: auto;
+    }
+
+    .card {
+        font-size: 0.9rem;
+    }
 }
-
-/* DARK MODE ENHANCED */
-body.dark #theme-toggle {
-    background: #fff;
-    color: #000;
-}
-
-body.dark .column { background: #111 !important; color: #eee; }
-
-body.dark #todo-column { border: 2px solid #c9b200; }
-body.dark #doing-column { border: 2px solid #0d6abf; }
-body.dark #done-column { border: 2px solid #0f8a17; }
-
-body.dark #todo-column .col-title { color: #c9b200; }
-body.dark #doing-column .col-title { color: #0d6abf; }
-body.dark #done-column .col-title { color: #0f8a17; }
-
-/* CARDS ESCURECIDOS */
-body.dark .todo-card { background: #947f16 !important; color: #fff; }
-body.dark .doing-card { background: #11539e !important; color: #fff; }
-body.dark .done-card { background: #137a1a !important; color: #fff; }
-body.dark .warning { background: #c2722d !important; }
-body.dark .danger { background: #bb1515 !important; }
