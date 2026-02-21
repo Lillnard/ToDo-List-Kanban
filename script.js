@@ -19,16 +19,13 @@ function openModal(edit = false, task = {}) {
   setMinDate();
 }
 
-/* Permitir hoje, mas não datas anteriores */
 function setMinDate() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
   const localISO = today.toISOString().slice(0, 10);
   document.getElementById("task-deadline").min = localISO + "T00:00";
 }
 
-/* Validação correta */
 function validateDeadline(deadline) {
   const selected = new Date(deadline);
   const now = new Date();
@@ -39,13 +36,11 @@ function validateDeadline(deadline) {
   const selectedDay = new Date(selected);
   selectedDay.setHours(0, 0, 0, 0);
 
-  // Bloqueia datas anteriores a hoje
   if (selectedDay < today) {
     alert("A data não pode ser anterior a hoje.");
     return false;
   }
 
-  // Se for hoje, o horário deve ser futuro
   if (selectedDay.getTime() === today.getTime() && selected <= now) {
     alert("Selecione um horário futuro.");
     return false;
@@ -77,6 +72,7 @@ function createCard(task) {
       <div class="progress-bar">
         <div class="progress-fill" data-bar></div>
       </div>` : ""}
+      <i class="fa fa-chevron-down toggle-icon"></i>
     </div>
 
     <div class="extra">
@@ -104,6 +100,13 @@ function createCard(task) {
 
   if (card.querySelector(".finish-btn"))
     card.querySelector(".finish-btn").onclick = () => moveTask(task.id, "done");
+
+  /* Toggle expand/collapse */
+  const header = card.querySelector(".card-header");
+  const icon = card.querySelector(".toggle-icon");
+
+  header.onclick = () => card.classList.toggle("expanded");
+  icon.onclick = () => card.classList.toggle("expanded");
 
   return card;
 }

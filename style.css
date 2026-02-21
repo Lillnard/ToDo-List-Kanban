@@ -39,11 +39,6 @@ body.dark header {
     background: #111;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 1.4rem;
-}
-
 #theme-toggle {
     padding: 10px;
     border: none;
@@ -68,7 +63,13 @@ body.dark #theme-toggle {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    transition: .2s;
 }
+
+#add-task-btn:hover {
+   transform: scale(1.02);
+}
+
 
 /* ==========================
    BOARD
@@ -105,16 +106,12 @@ body.dark #theme-toggle {
 #doing-column { background: #d9ecff; }
 #done-column { background: #d8ffd9; }
 
-/* Dark mode colors - ORIGINAL */
+/* Dark mode */
 body.dark .column { background: #111 !important; color: #eee; }
 
 body.dark #todo-column { border: 2px solid #c9b200; }
 body.dark #doing-column { border: 2px solid #0d6abf; }
 body.dark #done-column { border: 2px solid #0f8a17; }
-
-body.dark #todo-column .col-title { color: #c9b200; }
-body.dark #doing-column .col-title { color: #0d6abf; }
-body.dark #done-column .col-title { color: #0f8a17; }
 
 body.dark .todo-card { background: #947f16 !important; color: #fff; }
 body.dark .doing-card { background: #11539e !important; color: #fff; }
@@ -136,8 +133,38 @@ body.dark .danger { background: #bb1515 !important; }
     position: relative;
 }
 
-.card:hover {
-    transform: scale(1.02);
+/* Header clicável */
+.card-header {
+    cursor: pointer;
+    position: relative;
+    padding-right: 28px;
+}
+
+/* Ícone de expandir */
+.toggle-icon {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 14px;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+/* Área expansível */
+.extra {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+}
+
+/* Quando expandido */
+.card.expanded .extra {
+    max-height: 200px;
+}
+
+.card.expanded .toggle-icon {
+    transform: rotate(180deg);
 }
 
 /* Card colors */
@@ -163,14 +190,7 @@ body.dark .danger { background: #bb1515 !important; }
     transition: width 0.5s;
 }
 
-/* Card Buttons */
-.extra {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    gap: 6px;
-}
-
+/* Buttons */
 .card button {
     width: 100%;
     padding: 6px;
@@ -179,6 +199,7 @@ body.dark .danger { background: #bb1515 !important; }
     cursor: pointer;
     font-weight: bold;
     color: white;
+    margin-top: 6px;
 }
 
 .edit-btn { background: #008cff; }
@@ -225,6 +246,7 @@ body.dark .modal-content {
 
 .modal input {
     padding: 10px;
+    width: auto;
     border-radius: 6px;
     border: 1px solid #ccc;
 }
@@ -233,13 +255,20 @@ body.dark .modal-content {
     padding: 10px;
     border: none;
     border-radius: 6px;
+    cursor: pointer;
+    transition:0.2s;
 }
+
+.modal button:hover {
+    transform: scale(1.02);
+}
+
 
 #save-task-btn { background: #4caf50; color: white; }
 #cancel-task-btn { background: #e53935; color: white; }
 
 /* ==========================
-   MOBILE RESPONSIVE
+   MOBILE
 ========================== */
 
 @media (max-width: 768px) {
@@ -248,24 +277,15 @@ body.dark .modal-content {
         overflow: auto;
     }
 
-    header {
-        flex-wrap: wrap;
-        padding: 12px;
-        justify-content: space-between;
-    }
-
-    #theme-toggle {
-        margin-left: 0;
-    }
-
     .board {
         flex-direction: column;
         height: auto;
         overflow: visible;
+        align-items: center;
     }
 
     .column {
-        width: 100%;
+        width: 90%;
         height: auto;
     }
 
