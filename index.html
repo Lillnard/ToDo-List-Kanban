@@ -12,11 +12,14 @@
 <body>
 
 <button id="theme-toggle"><i class="fa fa-moon"></i></button>
-<button id="add-task-btn">Nova tarefa</button>
 
 <div class="board">
   <div class="column" id="todo-column" data-status="todo">
     <div class="col-title">A Fazer</div>
+
+    <button class="small-add-btn" id="add-task-btn">
+      <i class="fa fa-plus"></i> Nova tarefa
+    </button>
   </div>
 
   <div class="column" id="doing-column" data-status="doing">
@@ -28,6 +31,7 @@
   </div>
 </div>
 
+<!-- MODAL -->
 <div class="modal" id="task-modal">
   <div class="modal-content">
     <h3 id="modal-title">Criar Tarefa</h3>

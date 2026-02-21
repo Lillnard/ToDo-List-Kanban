@@ -121,7 +121,7 @@ function deleteTask(id) {
 /* Mover */
 function moveTask(id, newStatus) {
   const t = tasks.find(x => x.id === id);
-  t.status = newStatus;""
+  t.status = newStatus;
   saveToStorage();
   loadBoard();
 }
@@ -135,10 +135,7 @@ document.querySelectorAll(".column").forEach(col => {
     const id = parseInt(dragged.dataset.id);
     const t = tasks.find(x => x.id === id);
 
-    if (t.status === "todo" && col.dataset.status !== "todo")
-      t.status = col.dataset.status;
-    else if (t.status !== "todo")
-      t.status = col.dataset.status;
+    t.status = col.dataset.status;
 
     saveToStorage();
     loadBoard();
@@ -194,12 +191,21 @@ document.getElementById("save-task-btn").onclick = () =>
 
 /* Tema */
 const themeBtn = document.getElementById("theme-toggle");
+
 themeBtn.onclick = () => {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("kanbanTheme", document.body.classList.contains("dark"));
+  const isDark = document.body.classList.toggle("dark");
+
+  const icon = themeBtn.querySelector("i");
+  icon.className = isDark ? "fa fa-sun" : "fa fa-moon";
+
+  localStorage.setItem("kanbanTheme", isDark);
 };
-if (localStorage.getItem("kanbanTheme") === "true")
+
+if (localStorage.getItem("kanbanTheme") === "true") {
   document.body.classList.add("dark");
+  const icon = themeBtn.querySelector("i");
+  icon.className = "fa fa-sun";
+}
 
 /* Inicializar */
 loadBoard();

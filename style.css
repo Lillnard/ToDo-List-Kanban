@@ -7,15 +7,15 @@ body {
     height: 100vh;
     overflow: hidden;
     transition: background 0.3s, color 0.3s;
-  }
+}
   
-  /* Dark mode */
-  body.dark {
+/* Dark mode */
+body.dark {
     background: #1e1e1e;
     color: white;
-  }
+}
   
-  #theme-toggle {
+#theme-toggle {
     position: absolute;
     right: 15px;
     top: 15px;
@@ -26,9 +26,9 @@ body {
     color: white;
     cursor: pointer;
     font-size: 18px;
-  }
+}
   
-  #add-task-btn {
+#add-task-btn {
     margin: 10px;
     padding: 10px;
     background: #ffd43b;
@@ -36,82 +36,82 @@ body {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-  }
+}
   
-  /* Board */
-  .board {
+/* Board */
+.board {
     display: flex;
     flex: 1;
     gap: 15px;
     padding: 10px;
     height: calc(100vh - 90px);
-  }
+}
   
-  .column {
+.column {
     flex: 1;
     padding: 10px;
     overflow-y: auto;
     border-radius: 8px;
     transition: transform 0.2s;
-  }
+}
   
-  .column:active {
+.column:active {
     transform: scale(0.98);
-  }
+}
   
-  .col-title {
+.col-title {
     font-weight: bold;
     margin-bottom: 10px;
-  }
+}
   
-  #todo-column {
+#todo-column {
     background: #fff9d6;
-  }
-  #doing-column {
+}
+#doing-column {
     background: #d9ecff;
-  }
-  #done-column {
+}
+#done-column {
     background: #d8ffd9;
-  }
+}
   
-  /* Cards */
-  .card {
+/* Cards */
+.card {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 6px;
     cursor: grab;
     user-select: none;
     transition: transform 0.2s ease, background 0.3s;
-  }
+}
   
-  .card:hover {
+.card:hover {
     transform: scale(1.02);
-  }
+}
   
-  .todo-card { background: #ffef9a; }
-  .doing-card { background: #a8d2ff; }
-  .done-card { background: #92f59a; }
+.todo-card { background: #ffef9a; }
+.doing-card { background: #a8d2ff; }
+.done-card { background: #92f59a; }
   
-  .warning { background: #ffc48a !important; }
-  .danger { background: #ff8a8a !important; }
+.warning { background: #ffc48a !important; }
+.danger { background: #ff8a8a !important; }
   
-  /* Barra de progresso */
-  .progress-bar {
+/* Barra de progresso */
+.progress-bar {
     height: 6px;
     background: rgba(0,0,0,0.20);
     border-radius: 4px;
     margin-top: 5px;
     overflow: hidden;
-  }
-  .progress-fill {
+}
+.progress-fill {
     height: 100%;
     width: 0%;
     background: #4caf50;
     transition: width 0.5s;
-  }
+}
   
-  /* Botões internos */
-  .card button {
+/* Botões internos */
+.card button {
     margin-top: 5px;
     width: 100%;
     padding: 6px;
@@ -120,15 +120,15 @@ body {
     cursor: pointer;
     font-weight: bold;
     color: white;
-  }
+}
   
-  .edit-btn { background: #2196f3; }
-  .delete-btn { background: #e53935; }
-  .start-btn { background: #ff9800; }
-  .finish-btn { background: #43a047; }
+.edit-btn { background: #008cff; }
+.delete-btn { background: #ff4d4a; }
+.start-btn { background: #ff9800; }
+.finish-btn { background: #43a047; }
   
-  /* Modal */
-  .modal {
+/* Modal */
+.modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -138,9 +138,9 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
-  }
+}
   
-  .modal-content {
+.modal-content {
     background: #ffffff;
     color: black;
     padding: 25px;
@@ -149,41 +149,41 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
-  }
+}
   
-  body.dark .modal-content {
+body.dark .modal-content {
     background: #333;
     color: white;
-  }
+}
   
-  .modal input, .modal button, .modal label {
+.modal input, .modal button, .modal label {
     width: 100%;
     font-size: 15px;
-  }
+}
   
-  .modal input {
+.modal input {
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
-  }
+}
   
-  .modal button {
+.modal button {
     padding: 10px;
     border: none;
     border-radius: 6px;
-  }
+}
   
-  #save-task-btn {
+#save-task-btn {
     background: #4caf50;
     color: white;
-  }
-  #cancel-task-btn {
+}
+#cancel-task-btn {
     background: #e53935;
     color: white;
-  }
+}
   
-  /* MOBILE */
-  @media (max-width: 800px) {
+/* MOBILE */
+@media (max-width: 800px) {
     .board {
       flex-direction: column;
       height: auto;
@@ -192,4 +192,68 @@ body {
     .column {
       height: auto;
     }
-  }
+}
+
+/* ---------------------- */
+/* MODO DARK AVANÇADO     */
+/* ---------------------- */
+
+body.dark #theme-toggle {
+    background: #fff;
+    color: #000;
+}
+
+/* Fundo escuro das colunas */
+body.dark .column {
+    background: #111 !important;
+    color: #eee;
+}
+
+/* Bordas coloridas */
+body.dark #todo-column {
+    border: 2px solid #c9b200;
+}
+body.dark #doing-column {
+    border: 2px solid #0d6abf;
+}
+body.dark #done-column {
+    border: 2px solid #0f8a17;
+}
+
+/* Títulos coloridos */
+body.dark #todo-column .col-title {
+    color: #c9b200;
+}
+body.dark #doing-column .col-title {
+    color: #0d6abf;
+}
+body.dark #done-column .col-title {
+    color: #0f8a17;
+}
+
+/* ---------------------- */
+/* NOVO: CARDS ESCURECIDOS NO DARK */
+/* ---------------------- */
+
+body.dark .todo-card {
+    background: #947f16 !important;
+    color: #fff;
+}
+
+body.dark .doing-card {
+    background: #11539e !important;
+    color: #fff;
+}
+
+body.dark .done-card {
+    background: #137a1a !important;
+    color: #fff;
+}
+
+body.dark .warning {
+    background: #c2722d !important;
+}
+
+body.dark .danger {
+    background: #bb1515 !important;
+}
