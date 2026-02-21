@@ -29,22 +29,29 @@ function createCard(task) {
   card.dataset.id = task.id;
 
   card.innerHTML = `
-    <strong>${task.name}</strong><br>
-    Resp: ${task.owner}<br>
-    Prazo: ${new Date(task.deadline).toLocaleString()}
-    <div class="progress-bar">
-      <div class="progress-fill"></div>
+    <div class="card-header">
+      <strong>${task.name}</strong><br>
+      Resp: ${task.owner}<br>
+      Prazo: ${new Date(task.deadline).toLocaleString()}
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
     </div>
-    <button class="edit-btn"><i class="fa fa-pen"></i> Editar</button>
-    <button class="delete-btn"><i class="fa fa-trash"></i> Excluir</button>
-  `;
 
-  if (task.status === "todo") {
-    card.innerHTML += `<button class="start-btn"><i class="fa fa-play"></i> Iniciar</button>`;
-  }
-  if (task.status === "doing") {
-    card.innerHTML += `<button class="finish-btn"><i class="fa fa-check"></i> Concluir</button>`;
-  }
+    <i class="fa fa-chevron-down expand-toggle"></i>
+
+    <div class="extra">
+      <button class="edit-btn"><i class="fa fa-pen"></i> Editar</button>
+      <button class="delete-btn"><i class="fa fa-trash"></i> Excluir</button>
+      ${
+        task.status === "todo"
+          ? `<button class="start-btn"><i class="fa fa-play"></i> Iniciar</button>`
+          : task.status === "doing"
+          ? `<button class="finish-btn"><i class="fa fa-check"></i> Concluir</button>`
+          : ""
+      }
+    </div>
+  `;
 
   /* Eventos */
   card.addEventListener("dragstart", () => dragged = card);
@@ -59,6 +66,12 @@ function createCard(task) {
   if (card.querySelector(".finish-btn")) {
     card.querySelector(".finish-btn").onclick = () => moveTask(task.id, "done");
   }
+
+  /* Expandir */
+  const toggle = card.querySelector(".expand-toggle");
+  toggle.onclick = () => {
+    card.classList.toggle("expanded");
+  };
 
   return card;
 }

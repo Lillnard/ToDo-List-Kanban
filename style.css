@@ -9,7 +9,6 @@ body {
     transition: background 0.3s, color 0.3s;
 }
   
-/* Dark mode */
 body.dark {
     background: #1e1e1e;
     color: white;
@@ -64,37 +63,33 @@ body.dark {
     margin-bottom: 10px;
 }
   
-#todo-column {
-    background: #fff9d6;
-}
-#doing-column {
-    background: #d9ecff;
-}
-#done-column {
-    background: #d8ffd9;
-}
-  
-/* Cards */
+#todo-column { background: #fff9d6; }
+#doing-column { background: #d9ecff; }
+#done-column { background: #d8ffd9; }
+
+/* CARDS */
 .card {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 6px;
     cursor: grab;
     user-select: none;
-    transition: transform 0.2s ease, background 0.3s;
+    transition: transform 0.2s ease, background 0.3s, max-height 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
-  
+
 .card:hover {
     transform: scale(1.02);
 }
-  
+
 .todo-card { background: #ffef9a; }
 .doing-card { background: #a8d2ff; }
 .done-card { background: #92f59a; }
-  
+
 .warning { background: #ffc48a !important; }
 .danger { background: #ff8a8a !important; }
-  
+
 /* Barra de progresso */
 .progress-bar {
     height: 6px;
@@ -109,8 +104,17 @@ body.dark {
     background: #4caf50;
     transition: width 0.5s;
 }
-  
-/* Botões internos */
+
+/* BOTÕES OCULTOS */
+.extra {
+    display: none;
+    margin-top: 10px;
+}
+
+.card.expanded .extra {
+    display: block;
+}
+
 .card button {
     margin-top: 5px;
     width: 100%;
@@ -121,13 +125,28 @@ body.dark {
     font-weight: bold;
     color: white;
 }
-  
+
 .edit-btn { background: #008cff; }
 .delete-btn { background: #ff4d4a; }
 .start-btn { background: #ff9800; }
 .finish-btn { background: #43a047; }
-  
-/* Modal */
+
+/* ÍCONE DE EXPANDIR */
+.expand-toggle {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: transform 0.3s ease;
+    font-size: 18px;
+}
+
+.card.expanded .expand-toggle {
+    transform: rotate(180deg);
+}
+
+/* MODAL */
 .modal {
     position: fixed;
     top: 0;
@@ -173,87 +192,34 @@ body.dark .modal-content {
     border-radius: 6px;
 }
   
-#save-task-btn {
-    background: #4caf50;
-    color: white;
-}
-#cancel-task-btn {
-    background: #e53935;
-    color: white;
-}
+#save-task-btn { background: #4caf50; color: white; }
+#cancel-task-btn { background: #e53935; color: white; }
   
 /* MOBILE */
 @media (max-width: 800px) {
-    .board {
-      flex-direction: column;
-      height: auto;
-      overflow-y: auto;
-    }
-    .column {
-      height: auto;
-    }
+    .board { flex-direction: column; height: auto; }
+    .column { height: auto; }
 }
 
-/* ---------------------- */
-/* MODO DARK AVANÇADO     */
-/* ---------------------- */
-
+/* DARK MODE ENHANCED */
 body.dark #theme-toggle {
     background: #fff;
     color: #000;
 }
 
-/* Fundo escuro das colunas */
-body.dark .column {
-    background: #111 !important;
-    color: #eee;
-}
+body.dark .column { background: #111 !important; color: #eee; }
 
-/* Bordas coloridas */
-body.dark #todo-column {
-    border: 2px solid #c9b200;
-}
-body.dark #doing-column {
-    border: 2px solid #0d6abf;
-}
-body.dark #done-column {
-    border: 2px solid #0f8a17;
-}
+body.dark #todo-column { border: 2px solid #c9b200; }
+body.dark #doing-column { border: 2px solid #0d6abf; }
+body.dark #done-column { border: 2px solid #0f8a17; }
 
-/* Títulos coloridos */
-body.dark #todo-column .col-title {
-    color: #c9b200;
-}
-body.dark #doing-column .col-title {
-    color: #0d6abf;
-}
-body.dark #done-column .col-title {
-    color: #0f8a17;
-}
+body.dark #todo-column .col-title { color: #c9b200; }
+body.dark #doing-column .col-title { color: #0d6abf; }
+body.dark #done-column .col-title { color: #0f8a17; }
 
-/* ---------------------- */
-/* NOVO: CARDS ESCURECIDOS NO DARK */
-/* ---------------------- */
-
-body.dark .todo-card {
-    background: #947f16 !important;
-    color: #fff;
-}
-
-body.dark .doing-card {
-    background: #11539e !important;
-    color: #fff;
-}
-
-body.dark .done-card {
-    background: #137a1a !important;
-    color: #fff;
-}
-
-body.dark .warning {
-    background: #c2722d !important;
-}
-
-body.dark .danger {
-    background: #bb1515 !important;
-}
+/* CARDS ESCURECIDOS */
+body.dark .todo-card { background: #947f16 !important; color: #fff; }
+body.dark .doing-card { background: #11539e !important; color: #fff; }
+body.dark .done-card { background: #137a1a !important; color: #fff; }
+body.dark .warning { background: #c2722d !important; }
+body.dark .danger { background: #bb1515 !important; }
