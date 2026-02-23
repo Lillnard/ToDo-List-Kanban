@@ -5,19 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kanban To-Do</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- ÍCONES -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header">
   <button class="header-btn" id="add-task-btn">
     <i class="fa fa-plus"></i> Nova tarefa
   </button>
 
-  <button id="theme-toggle"><i class="fa fa-moon"></i></button>
+  <div style="display:flex; gap:10px;">
+    <button id="theme-toggle"><i class="fa fa-moon"></i></button>
+    <button id="lang-toggle" class="lang-btn">
+      <img src="br.png" id="lang-flag" width="22">
+    </button>
+  </div>
 </header>
 
 <div class="board">
@@ -34,7 +36,6 @@
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal" id="task-modal">
   <div class="modal-content">
     <h3 id="modal-title">Criar Tarefa</h3>
